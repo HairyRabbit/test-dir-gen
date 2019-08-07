@@ -16,8 +16,7 @@ export interface Options {
   install: boolean
 }
 
-const DEFAULT_OPTIONS: Omit<Options, 'name' | 'ts'> = {
-  context: `.`,
+const DEFAULT_OPTIONS: Omit<Options, 'name' | 'ts' | 'context'> = {
   output: `.`,
   use: LibraryUsage.Install,
   exporter: `lib`,
@@ -96,9 +95,10 @@ export default async function main(options: Partial<Options> = {}) {
   if(undefined === name) throw makeNameRequiredError()
   const pkg = await readPkgUp({ normalize: true })
   if(undefined === pkg) throw makeConfigFileNotFoundError()
+  const contextDir = context || resolveContext()
   const { name: pkgName } = pkg.package
   const dirName: string = `${pkgName}-${name}`
-  const dir = path.resolve(context, name)
+  const dir = path.resolve(contextDir, name)
   if(fs.existsSync(dir)) throw makeTargetDirectoryExistsError(dir)
   fs.mkdirSync(dir)
 
@@ -120,6 +120,14 @@ export default async function main(options: Partial<Options> = {}) {
     console.log(stdout)
     console.log(stderr)
   }
+}
+
+function resolveContext(): string {
+  const testDir = ['./tests', './test'].find(dir => {
+    return fs.existsSync(path.resolve(dir))
+  })
+
+  return testDir || '.'
 }
 
 function makeConfigFileNotFoundError(): Error {
