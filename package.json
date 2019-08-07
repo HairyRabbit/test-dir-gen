@@ -1,6 +1,6 @@
 {
   "name": "test-dir-gen",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Create a test directory for your JavaScript library, base on your package.json",
   "main": "index.js",
   "bin": "./bin/test-dir-gen",
