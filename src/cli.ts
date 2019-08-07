@@ -39,6 +39,5 @@ export default function main(): void {
     .alias(`help`, `h`)
     .argv
 
-  console.log(args)
   gen(args as Partial<Options>)
 }
