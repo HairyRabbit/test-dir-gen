@@ -33,11 +33,11 @@ function makePackageJson(name: string, lib: { dependencies: { [key: string]: str
   }
 
   const tsDeps = !ts ? {
-    script: {
+    scripts: {
       start: `node index.js`
     }
   } : {
-    script: {
+    scripts: {
       start: `ts-node index.ts`
     },
     devDependencies: {
